@@ -216,3 +216,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+BoneVision DX-Ray-handoff.zip
+CLAUDE.md
+TASK.md
+screenshot.png
+.claude/
+
+# Custom ignores
+.DS_Store
+.idea/
+extracted_handoff/
+fix_ui.py
