@@ -1,12 +1,13 @@
-import os
-import shutil
 from PyQt5.QtCore import QTimer, QCoreApplication
-from view import C
+from ui.styles import C
+from core.phantom import PhantomGenerator
+from core.physics import PhysicsModel
+from core.metrics import MetricsCalculator
+from utils.cleanup import SystemCleanup
 
 class MainController:
-    def __init__(self, view, physics_engine):
+    def __init__(self, view):
         self.view = view
-        self.Physics = physics_engine
         
         # State
         self.pType = 'ribcage'
@@ -40,22 +41,11 @@ class MainController:
         self.view.btn_dec.clicked.connect(self.run_dec)
         self.view.btn_rst.clicked.connect(self.reset_pipeline)
         
-        self.view.on_close_callback = self.cleanup
-
-    def cleanup(self):
-        print("Cleaning up system files before exit...")
-        dirs_to_remove = ['__pycache__', '.idea']
-        for d in dirs_to_remove:
-            if os.path.exists(d) and os.path.isdir(d):
-                try:
-                    shutil.rmtree(d, ignore_errors=True)
-                    print(f"Removed {d} successfully.")
-                except Exception as e:
-                    print(f"Error removing {d}: {e}")
+        self.view.on_close_callback = SystemCleanup.run
 
     def on_phantom_change(self, v):
         self.pType = v
-        self.phantom = self.Physics.generate_phantom(v)
+        self.phantom = PhantomGenerator.generate(v)
         self.view.ic_b_gt.set_data(self.phantom['bone'])
         self.view.ic_t_gt.set_data(self.phantom['tissue'])
         self.reset_pipeline(silent=True)
@@ -151,8 +141,8 @@ class MainController:
         QTimer.singleShot(50, self._do_sim)
         
     def _do_sim(self):
-        self.projL = self.Physics.simulate_projection(self.phantom, self.eL, self.noise, self.scatter)
-        self.projH = self.Physics.simulate_projection(self.phantom, self.eH, self.noise, self.scatter)
+        self.projL = PhysicsModel.simulate_projection(self.phantom, self.eL, self.noise, self.scatter)
+        self.projH = PhysicsModel.simulate_projection(self.phantom, self.eH, self.noise, self.scatter)
         
         self.view.ic_p_l.set_data(self.projL)
         self.view.ic_p_h.set_data(self.projH)
@@ -163,12 +153,12 @@ class MainController:
         self.dinfo = None
         self.step = 1
         
-        mu_bl = self.Physics.mu(self.eL, 'bone')
-        mu_tl = self.Physics.mu(self.eL, 'tissue')
+        mu_bl = PhysicsModel.mu(self.eL, 'bone')
+        mu_tl = PhysicsModel.mu(self.eL, 'tissue')
         self.view.add_log(f"[SIM] EL={int(self.eL)} μB={mu_bl:.2f} μT={mu_tl:.2f}")
         
-        mu_bh = self.Physics.mu(self.eH, 'bone')
-        mu_th = self.Physics.mu(self.eH, 'tissue')
+        mu_bh = PhysicsModel.mu(self.eH, 'bone')
+        mu_th = PhysicsModel.mu(self.eH, 'tissue')
         self.view.add_log(f"[SIM] EH={int(self.eH)} μB={mu_bh:.2f} μT={mu_th:.2f}")
         
         self.running = False
@@ -183,7 +173,7 @@ class MainController:
         QTimer.singleShot(50, self._do_dec)
         
     def _do_dec(self):
-        self.dinfo = self.Physics.decompose(self.projL, self.projH, self.eL, self.eH)
+        self.dinfo = PhysicsModel.decompose(self.projL, self.projH, self.eL, self.eH)
         self.boneMap = self.dinfo['boneMap']
         self.tissueMap = self.dinfo['tissueMap']
         
@@ -200,7 +190,7 @@ class MainController:
         
         self.view.add_log(f"[DEC] det(A)={self.dinfo['det']:.4f}")
         
-        self.metrics = self.Physics.compute_metrics(self.boneMap, self.tissueMap, self.phantom, self.projL)
+        self.metrics = MetricsCalculator.compute(self.boneMap, self.tissueMap, self.phantom, self.projL)
         
         self.view.qm_empty.hide()
         self.view.mr_mb.set_val(self.metrics['maeBone'])
