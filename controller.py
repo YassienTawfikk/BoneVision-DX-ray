@@ -165,11 +165,11 @@ class MainController:
         
         mu_bl = self.Physics.mu(self.eL, 'bone')
         mu_tl = self.Physics.mu(self.eL, 'tissue')
-        self.view.add_log(f"[SIM] E_L={int(self.eL)}keV  μ_b={mu_bl:.3f}  μ_t={mu_tl:.3f}")
+        self.view.add_log(f"[SIM] EL={int(self.eL)} μB={mu_bl:.2f} μT={mu_tl:.2f}")
         
         mu_bh = self.Physics.mu(self.eH, 'bone')
         mu_th = self.Physics.mu(self.eH, 'tissue')
-        self.view.add_log(f"[SIM] E_H={int(self.eH)}keV  μ_b={mu_bh:.3f}  μ_t={mu_th:.3f}")
+        self.view.add_log(f"[SIM] EH={int(self.eH)} μB={mu_bh:.2f} μT={mu_th:.2f}")
         
         self.running = False
         self.update_status()
@@ -198,7 +198,7 @@ class MainController:
         self.view.mr_mubh.show()
         self.view.mr_det.show()
         
-        self.view.add_log(f"[DEC] Matrix inverted. det(A)={self.dinfo['det']:.4f}")
+        self.view.add_log(f"[DEC] det(A)={self.dinfo['det']:.4f}")
         
         self.metrics = self.Physics.compute_metrics(self.boneMap, self.tissueMap, self.phantom, self.projL)
         

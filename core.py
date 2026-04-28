@@ -3,7 +3,7 @@ from scipy.ndimage import gaussian_filter
 
 class PhysicsEngine:
     """Core physics models and dual-energy simulation algorithms."""
-    SZ = 128
+    SZ = 512
 
     @staticmethod
     def mu(E, mat_type):
@@ -24,36 +24,38 @@ class PhysicsEngine:
         dx = x - cx
         dy = y - cy
         
+        scale = sz / 128.0
+        
         if phantom_type == 'ribcage':
-            in_body = (dx**2)/(52**2) + (dy**2)/(44**2) < 1
+            in_body = (dx**2)/((52*scale)**2) + (dy**2)/((44*scale)**2) < 1
             tissue[in_body] = 2.2
             tissue[~in_body] = 0.05
             
-            mask1 = (np.abs(dx) < 7) & (np.abs(dy) < 36)
+            mask1 = (np.abs(dx) < 7*scale) & (np.abs(dy) < 36*scale)
             bone[mask1] = 0.7
             
-            rib_ys = [-26, -13, 0, 13, 26]
+            rib_ys = [-26*scale, -13*scale, 0, 13*scale, 26*scale]
             for ry in rib_ys:
                 ldy = dy - ry
-                arcR = np.sqrt(np.maximum(0, 38**2 - ldy**2))
-                mask2 = (np.abs(np.abs(dx) - arcR) < 3.5) & (np.abs(ldy) < 11)
+                arcR = np.sqrt(np.maximum(0, (38*scale)**2 - ldy**2))
+                mask2 = (np.abs(np.abs(dx) - arcR) < 3.5*scale) & (np.abs(ldy) < 11*scale)
                 bone[mask2] = 0.45
                 
         elif phantom_type == 'simple':
             r = np.sqrt(dx**2 + dy**2)
-            tissue[r < 50] = 2.0
-            tissue[r >= 50] = 0.1
+            tissue[r < 50*scale] = 2.0
+            tissue[r >= 50*scale] = 0.1
             
-            mask1 = (dx**2)/(20**2) + (dy**2)/(32**2) < 1
+            mask1 = (dx**2)/((20*scale)**2) + (dy**2)/((32*scale)**2) < 1
             bone[mask1] = 0.65
-            mask2 = (dx**2)/(9**2) + (dy**2)/(9**2) < 1
+            mask2 = (dx**2)/((9*scale)**2) + (dy**2)/((9*scale)**2) < 1
             bone[mask2] = 0.35
             
         else: # layers
             tissue[:] = 1.8
-            mask1 = np.broadcast_to(((y >= 28) & (y < 44)) | ((y >= 82) & (y < 98)), bone.shape)
+            mask1 = np.broadcast_to(((y >= 28*scale) & (y < 44*scale)) | ((y >= 82*scale) & (y < 98*scale)), bone.shape)
             bone[mask1] = 0.55
-            mask2 = (np.abs(dx) < 12) & (y >= 18) & (y < 110)
+            mask2 = (np.abs(dx) < 12*scale) & (y >= 18*scale) & (y < 110*scale)
             bone[mask2] = np.maximum(bone[mask2], 0.38)
             
         return {'bone': bone, 'tissue': tissue}
@@ -68,7 +70,7 @@ class PhysicsEngine:
         proj = muB * bone + muT * tissue
         
         if scatter > 0.002:
-            blr = gaussian_filter(proj, sigma=8)
+            blr = gaussian_filter(proj, sigma=8 * (cls.SZ / 128.0))
             proj += scatter * blr
             
         if noise_sigma > 0.001:

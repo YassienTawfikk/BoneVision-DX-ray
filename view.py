@@ -152,7 +152,7 @@ class ImageCard(QFrame):
             h, w, c = self._current_rgb.shape
             qimg = QImage(self._current_rgb.data, w, h, 3 * w, QImage.Format_RGB888)
             pixmap = QPixmap.fromImage(qimg).scaled(
-                self.image_label.size(), Qt.KeepAspectRatio, Qt.FastTransformation
+                self.image_label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
             )
             self.image_label.setPixmap(pixmap)
             
@@ -432,7 +432,7 @@ class MainWindow(QMainWindow):
             col = f"{C['blue']}bb" if l.startswith('[SIM]') else (
                   f"{C['green']}bb" if l.startswith('[DEC]') else (
                   f"{C['orange']}99" if l.startswith('[RST]') else '#3a5575'))
-            html += f"<div style='color: {col}; line-height: 1.5;'>{l}</div>"
+            html += f"<div style='color: {col}; line-height: 1.5; margin-right: 18px; word-wrap: break-word;'>{l}</div>"
         self.log_widget.setHtml(html)
         self.log_widget.verticalScrollBar().setValue(self.log_widget.verticalScrollBar().maximum())
         
@@ -511,7 +511,7 @@ class MainWindow(QMainWindow):
         self.k_eh = Knob("High Energy", 100.0, 25, 140, 1, " keV", C['green'])
         
         s2.addWidget(self.k_el)
-        s2.addWidget(self.k_eh)
+        s2.addWidget(self.k_eh) 
         l_layout.addWidget(s2)
         
         s3 = Sec("Realism")
@@ -551,7 +551,7 @@ class MainWindow(QMainWindow):
         self.log_widget = QTextEdit()
         self.log_widget.setReadOnly(True)
         self.log_widget.setFixedHeight(100)
-        self.log_widget.setStyleSheet(f"background-color: #080e16; border: 1px solid {C['border']}; border-radius: 4px; padding: 4px; font-size: 9px; ")
+        self.log_widget.setStyleSheet(f"background-color: #080e16; border: 1px solid {C['border']}; border-radius: 4px; padding: 4px; padding-right: 14px; font-size: 9px; font-family: 'Courier New', monospace;")
         l_layout.addWidget(self.log_widget)
         
         b_layout.addWidget(left)
