@@ -11,7 +11,7 @@ def main():
     window = MainWindow()
     controller = MainController(window, PhysicsEngine)
     
-    window.show()
+    window.showFullScreen()
     sys.exit(app.exec_())
 
 if __name__ == '__main__':

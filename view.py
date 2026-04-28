@@ -51,7 +51,7 @@ class ImageCard(QFrame):
         header_layout.setSpacing(6)
         
         lbl = QLabel(label)
-        lbl.setStyleSheet(f"color: {C['dim']}; font-size: 10px; font-family: 'Courier New', monospace; letter-spacing: 1px;")
+        lbl.setStyleSheet(f"color: {C['dim']}; font-size: 10px;  letter-spacing: 1px;")
         header_layout.addWidget(lbl, 1)
         
         if tag:
@@ -64,7 +64,7 @@ class ImageCard(QFrame):
                 border-radius: 3px;
                 padding: 1px 5px;
                 font-size: 9px;
-                font-family: 'Courier New', monospace;
+                
             """)
             header_layout.addWidget(tag_lbl)
             self.tag_lbl = tag_lbl
@@ -98,7 +98,7 @@ class ImageCard(QFrame):
         self.image_label.setMinimumSize(128, 128)
         canvas_layout.addWidget(self.image_label)
         
-        self.empty_label = QLabel(f"<div style='text-align: center; color: {C['muted']};'><div style='font-size: 22px; margin-bottom: 6px;'>◻</div><div style='font-size: 9px; font-family: 'Courier New', monospace;'>{empty_msg}</div></div>")
+        self.empty_label = QLabel(f"<div style='text-align: center; color: {C['muted']};'><div style='font-size: 22px; margin-bottom: 6px;'>◻</div><div style='font-size: 9px; '>{empty_msg}</div></div>")
         self.empty_label.setAlignment(Qt.AlignCenter)
         canvas_layout.addWidget(self.empty_label)
         
@@ -120,14 +120,14 @@ class ImageCard(QFrame):
                     background-color: {C['blue']}18;
                     border: 1px solid {C['blue']}44;
                     color: {C['blue']};
-                    padding: 2px 6px; border-radius: 3px; font-size: 9px; font-family: 'Courier New', monospace;
+                    padding: 2px 6px; border-radius: 3px; font-size: 9px; 
                 """)
             else:
                 btn.setStyleSheet(f"""
                     background-color: transparent;
                     border: 1px solid transparent;
                     color: {C['muted']};
-                    padding: 2px 6px; border-radius: 3px; font-size: 9px; font-family: 'Courier New', monospace;
+                    padding: 2px 6px; border-radius: 3px; font-size: 9px; 
                 """)
                 
     def set_data(self, data):
@@ -180,7 +180,7 @@ class Knob(QWidget):
         lbl = QLabel(label)
         lbl.setStyleSheet(f"font-size: 10px; color: {C['dim']};")
         self.val_lbl = QLabel(f"{self.fmt(self.val)}{self.unit}")
-        self.val_lbl.setStyleSheet(f"font-size: 11px; font-family: 'Courier New', monospace; color: {self.color}; font-weight: bold;")
+        self.val_lbl.setStyleSheet(f"font-size: 11px;  color: {self.color}; font-weight: bold;")
         
         header.addWidget(lbl)
         header.addStretch()
@@ -226,7 +226,7 @@ class Sec(QWidget):
         header.setContentsMargins(0,0,0,0)
         header.setSpacing(7)
         lbl = QLabel(label.upper())
-        lbl.setStyleSheet(f"font-size: 9px; font-family: 'Courier New', monospace; color: {C['muted']}; font-weight: bold; letter-spacing: 1px;")
+        lbl.setStyleSheet(f"font-size: 9px;  color: {C['muted']}; font-weight: bold; letter-spacing: 1px;")
         line = QFrame()
         line.setFrameShape(QFrame.HLine)
         line.setStyleSheet(f"background-color: {C['border']};")
@@ -305,7 +305,7 @@ class MRow(QWidget):
     def set_val(self, val_text, good=None):
         col = C['green'] if good is True else (C['red'] if good is False else C['text'])
         self.val_lbl.setText(f"{val_text} <span style='font-size: 9px; color: {C['muted']}'>{self.unit}</span>")
-        self.val_lbl.setStyleSheet(f"font-size: 11px; font-family: 'Courier New', monospace; color: {col}; font-weight: bold;")
+        self.val_lbl.setStyleSheet(f"font-size: 11px;  color: {col}; font-weight: bold;")
 
 class PhantomSelector(QWidget):
     valueChanged = pyqtSignal(str)
@@ -346,7 +346,7 @@ class PhantomSelector(QWidget):
                     border-radius: 5px;
                     color: {C['blue']};
                     font-size: 10px;
-                    font-family: 'Courier New', monospace;
+                    
                     padding: 7px 4px;
                 """)
             else:
@@ -356,7 +356,7 @@ class PhantomSelector(QWidget):
                     border-radius: 5px;
                     color: {C['dim']};
                     font-size: 10px;
-                    font-family: 'Courier New', monospace;
+                    
                     padding: 7px 4px;
                 """)
 
@@ -399,13 +399,13 @@ class AttenChart(FigureCanvasQTAgg):
         for idx, e in enumerate([self.eL, self.eH]):
             mx = ((e - 20) / 120) * 210
             col = C['red'] if idx == 0 else C['green']
-            self.ax.plot([mx, mx], [-10, 70], color=col, linewidth=1, linestyle='--', alpha=0.65)
-            self.ax.text(mx, -6, str(int(e)), color=col, fontsize=7, ha='center', va='bottom', fontfamily='Courier New')
+            self.ax.plot([mx, mx], [-4, 70], color=col, linewidth=1, linestyle='--', alpha=0.65)
+            self.ax.text(mx, -8, str(int(e)), color=col, fontsize=7, ha='center', va='bottom', fontfamily='Courier New')
             
-        self.ax.plot(5, 3, marker='o', markersize=3, color=C['orange'])
-        self.ax.text(11, 5, 'Bone', color=C['dim'], fontsize=7, va='center', fontfamily='Courier New')
-        self.ax.plot(48, 3, marker='o', markersize=3, color=C['blue'])
-        self.ax.text(54, 5, 'Tissue', color=C['dim'], fontsize=7, va='center', fontfamily='Courier New')
+        self.ax.plot(80, 85, marker='o', markersize=3, color=C['orange'])
+        self.ax.text(88, 85, 'Bone', color=C['dim'], fontsize=7, va='center', fontfamily='Courier New')
+        self.ax.plot(135, 85, marker='o', markersize=3, color=C['blue'])
+        self.ax.text(143, 85, 'Tissue', color=C['dim'], fontsize=7, va='center', fontfamily='Courier New')
         
         self.ax.text(0, 74, '20', color=C['muted'], fontsize=7, ha='left', va='top', fontfamily='Courier New')
         self.ax.text(207, 74, '140 keV', color=C['muted'], fontsize=7, ha='right', va='top', fontfamily='Courier New')
@@ -417,7 +417,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("BoneVision DX-Ray")
         self.resize(1100, 700)
-        self.setStyleSheet(f"background-color: {C['bg']}; color: {C['text']}; font-family: Arial, Helvetica, sans-serif;")
+        self.setStyleSheet(f"background-color: {C['bg']}; color: {C['text']};")
         self.log = []
         self.on_close_callback = None
         self.init_ui()
@@ -457,7 +457,7 @@ class MainWindow(QMainWindow):
         title = QLabel("BoneVision <span style='color:"+C['blue']+"'>DX-Ray</span>")
         title.setStyleSheet("font-size: 15px; font-weight: bold;")
         sub = QLabel("Dual-Energy X-Ray Material Decomposition")
-        sub.setStyleSheet(f"font-size: 9px; color: {C['muted']}; font-family: 'Courier New', monospace; border-left: 1px solid {C['border']}; padding-left: 12px;")
+        sub.setStyleSheet(f"font-size: 9px; color: {C['muted']}; border-left: 1px solid {C['border']}; padding-left: 12px;")
         
         logo_lay.addWidget(d1)
         logo_lay.addWidget(d2)
@@ -495,8 +495,9 @@ class MainWindow(QMainWindow):
         b_layout.setSpacing(0)
         
         left = QWidget()
+        left.setObjectName("LeftPanel")
         left.setFixedWidth(238)
-        left.setStyleSheet(f"background-color: {C['panel']}; border-right: 1px solid {C['border']};")
+        left.setStyleSheet(f"#LeftPanel {{ background-color: {C['panel']}; border-right: 1px solid {C['border']}; }}")
         l_layout = QVBoxLayout(left)
         l_layout.setContentsMargins(14,14,14,14)
         
@@ -506,16 +507,16 @@ class MainWindow(QMainWindow):
         l_layout.addWidget(s1)
         
         s2 = Sec("Acquisition")
-        self.k_el = Knob("Low Energy E_L", 40.0, 20, 90, 1, " keV", C['red'])
-        self.k_eh = Knob("High Energy E_H", 100.0, 25, 150, 1, " keV", C['green'])
+        self.k_el = Knob("Low Energy", 40.0, 20, 90, 1, " keV", C['red'])
+        self.k_eh = Knob("High Energy", 100.0, 25, 140, 1, " keV", C['green'])
         
         s2.addWidget(self.k_el)
         s2.addWidget(self.k_eh)
         l_layout.addWidget(s2)
         
         s3 = Sec("Realism")
-        self.k_noise = Knob("Noise  σ", 0.025, 0, 0.2, 0.005, "", C['purple'])
-        self.k_scatter = Knob("Scatter  β", 0.012, 0, 0.15, 0.005, "", C['orange'])
+        self.k_noise = Knob("Noise Level (σ)", 0.025, 0, 0.2, 0.005, "", C['purple'])
+        self.k_scatter = Knob("Scatter Level (β)", 0.012, 0, 0.15, 0.005, "", C['orange'])
         s3.addWidget(self.k_noise)
         s3.addWidget(self.k_scatter)
         l_layout.addWidget(s3)
@@ -544,19 +545,20 @@ class MainWindow(QMainWindow):
         l_layout.addStretch()
         
         log_lbl = QLabel("OUTPUT LOG")
-        log_lbl.setStyleSheet(f"font-size: 9px; color: {C['muted']}; font-family: 'Courier New', monospace; letter-spacing: 1px; margin-bottom: 5px;")
+        log_lbl.setStyleSheet(f"font-size: 9px; color: {C['muted']};  letter-spacing: 1px; margin-bottom: 5px;")
         l_layout.addWidget(log_lbl)
         
         self.log_widget = QTextEdit()
         self.log_widget.setReadOnly(True)
         self.log_widget.setFixedHeight(100)
-        self.log_widget.setStyleSheet(f"background-color: #080e16; border: 1px solid {C['border']}; border-radius: 4px; padding: 4px; font-size: 9px; font-family: 'Courier New', monospace;")
+        self.log_widget.setStyleSheet(f"background-color: #080e16; border: 1px solid {C['border']}; border-radius: 4px; padding: 4px; font-size: 9px; ")
         l_layout.addWidget(self.log_widget)
         
         b_layout.addWidget(left)
         
         center = QWidget()
-        center.setStyleSheet("background-color: #0b1320;")
+        center.setObjectName("CenterPanel")
+        center.setStyleSheet("#CenterPanel { background-color: #0b1320; }")
         c_layout = QGridLayout(center)
         c_layout.setContentsMargins(12,12,12,12)
         c_layout.setSpacing(10)
@@ -578,8 +580,9 @@ class MainWindow(QMainWindow):
         b_layout.addWidget(center, 1)
         
         right = QWidget()
+        right.setObjectName("RightPanel")
         right.setFixedWidth(242)
-        right.setStyleSheet(f"background-color: {C['panel']}; border-left: 1px solid {C['border']};")
+        right.setStyleSheet(f"#RightPanel {{ background-color: {C['panel']}; border-left: 1px solid {C['border']}; }}")
         
         r_layout = QVBoxLayout(right)
         r_layout.setContentsMargins(14,14,14,14)
@@ -595,14 +598,14 @@ class MainWindow(QMainWindow):
         r_layout.addWidget(s5)
         
         s6 = Sec("System Parameters")
-        self.mr_el = MRow("E_L (low)", unit="keV")
-        self.mr_eh = MRow("E_H (high)", unit="keV")
-        self.mr_esep = MRow("ΔE separation", unit="keV")
-        self.mr_ns = MRow("Noise  σ")
-        self.mr_sc = MRow("Scatter  β")
-        self.mr_mubl = MRow("μ_bone @ E_L", unit="cm⁻¹")
-        self.mr_mubh = MRow("μ_bone @ E_H", unit="cm⁻¹")
-        self.mr_det = MRow("det(A)")
+        self.mr_el = MRow("Low Energy", unit="keV")
+        self.mr_eh = MRow("High Energy", unit="keV")
+        self.mr_esep = MRow("Energy Separation", unit="keV")
+        self.mr_ns = MRow("Noise Level (σ)")
+        self.mr_sc = MRow("Scatter Level (β)")
+        self.mr_mubl = MRow("Bone Atten. (Low)", unit="cm⁻¹")
+        self.mr_mubh = MRow("Bone Atten. (High)", unit="cm⁻¹")
+        self.mr_det = MRow("Matrix Determinant")
         
         for mr in [self.mr_el, self.mr_eh, self.mr_esep, self.mr_ns, self.mr_sc, self.mr_mubl, self.mr_mubh, self.mr_det]:
             s6.addWidget(mr)
@@ -614,21 +617,21 @@ class MainWindow(QMainWindow):
         
         s7 = Sec("Quality Metrics")
         self.qm_empty = QLabel("Run decomposition\nto compute metrics.")
-        self.qm_empty.setStyleSheet(f"font-size: 10px; color: {C['muted']}; font-family: 'Courier New', monospace; line-height: 1.7;")
+        self.qm_empty.setStyleSheet(f"font-size: 10px; color: {C['muted']};  line-height: 1.7;")
         s7.addWidget(self.qm_empty)
         
-        self.mr_mb = MRow("MAE — bone", unit="cm")
-        self.mr_mt = MRow("MAE — tissue", unit="cm")
-        self.mr_cnr = MRow("CNR bone/bg")
-        self.mr_snr = MRow("SNR proj-L")
+        self.mr_mb = MRow("MAE (Bone)", unit="cm")
+        self.mr_mt = MRow("MAE (Tissue)", unit="cm")
+        self.mr_cnr = MRow("Contrast-to-Noise Ratio")
+        self.mr_snr = MRow("Signal-to-Noise Ratio")
         for mr in [self.mr_mb, self.mr_mt, self.mr_cnr, self.mr_snr]:
             s7.addWidget(mr)
             mr.hide()
         r_layout.addWidget(s7)
         
         s8 = Sec("Attenuation Model")
-        lbl = QLabel("μ(E) CURVES — BONE / TISSUE")
-        lbl.setStyleSheet(f"font-size: 9px; color: {C['muted']}; font-family: 'Courier New', monospace; letter-spacing: 1px; margin-bottom: 8px;")
+        lbl = QLabel("ATTENUATION CURVES")
+        lbl.setStyleSheet(f"font-size: 9px; color: {C['muted']};  letter-spacing: 1px; margin-bottom: 8px;")
         s8.addWidget(lbl)
         
         self.chart = AttenChart()
