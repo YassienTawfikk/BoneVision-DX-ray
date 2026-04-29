@@ -228,3 +228,5 @@ screenshot.png
 .idea/
 extracted_handoff/
 fix_ui.py
+
+.vscode/
