@@ -54,14 +54,18 @@ class MainController:
 
     def on_el_change(self, v):
         self.eL = v
-        if self.eL >= self.eH:
-            self.view.k_eh.set_value(min(150, self.eL + 5))
+        if self.eL >= self.eH - 5:
+            min_v = min(150, self.eL + 5)
+            self.view.k_eh.set_value(min_v)
+            self.eH = min_v
         self.update_status()
 
     def on_eh_change(self, v):
         self.eH = v
-        if self.eH <= self.eL:
-            self.view.k_el.set_value(max(20, self.eH - 5))
+        if self.eH <= self.eL + 5:
+            min_v = min(90, self.eH - 5)
+            self.view.k_el.set_value(min_v)
+            self.eL = min_v
         self.update_status()
         
     def on_noise_change(self, v):
